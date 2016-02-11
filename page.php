@@ -1,6 +1,13 @@
 <?php while (have_posts()) : the_post(); ?>
   <?php get_template_part('templates/page', 'header'); ?>
-  <?php include 'city-api.php'; ?>
+  <?php 
+    require_once 'lib/Weather/WeatherApi.php';
+    $weather = new WeatherApi();
+    $city = get_the_title();
+    $country = get_post_field('post_content', $post_id);
+    $weather = $weather->callAPI($country, $city);
+    $weather_list = $weather['list'];
+  ?>
 
 
 <?php for ($i = 0; $i < 5; $i++) {?>
@@ -14,3 +21,5 @@
 <?php } ?>
 
 <?php endwhile; ?>
+
+
